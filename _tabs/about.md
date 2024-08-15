@@ -6,11 +6,11 @@ order: 4
 
 # Welcome to Amr Yasser's Cybersecurity Hub!
 
-__I’m Amr Yasser, a Junior Penetration Tester with a keen interest in cybersecurity and a solid foundation in ethical hacking. My journey began with a fascination for uncovering vulnerabilities and has since evolved into a passion for safeguarding digital landscapes.__
+__I’m Amr Yasser, a Penetration Tester with a keen interest in cybersecurity and a solid foundation in ethical hacking. My journey began with a fascination for uncovering vulnerabilities and has since evolved into a passion for safeguarding digital landscapes.__
 
 # Who Am I?
 
-As a Junior Penetration Tester, I specialize in identifying and addressing security flaws in systems and applications. My approach combines hands-on experience with a deep understanding of cybersecurity principles, thanks to my extensive study of key certifications.
+As a  Penetration Tester, I specialize in identifying and addressing security flaws in systems and applications. My approach combines hands-on experience with a deep understanding of cybersecurity principles, thanks to my extensive study of key certifications.
 
 # What I Do
 
@@ -24,7 +24,7 @@ As a Junior Penetration Tester, I specialize in identifying and addressing secur
 
 Although I haven’t formally earned certifications, I’ve rigorously studied the following:
 
-```eJPTv2``` (eLearnSecurity Junior Penetration Tester v2): This study provided me with a strong foundation in penetration testing methodologies.
+```eJPTv2``` (eLearnSecurity  Penetration Tester v2): This study provided me with a strong foundation in penetration testing methodologies.
 
 ```eWPTv2``` (eLearnSecurity Web Application Penetration Tester v2): My in-depth study of this material enhanced my skills in identifying and exploiting web application vulnerabilities.
 
