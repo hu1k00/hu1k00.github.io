@@ -167,4 +167,4 @@ tag: season 6
  * then go to ssh connection and type.
  > /bin/bash -p 
 
- ![](/img/root.png) .
+ ![](/img/root.png) 
