@@ -5,7 +5,6 @@ date: 14-08-2024
 categories: [HackTheBox]
 tag: season 6  
 ---
-# Sea Walkthrough: Conquering Hack The Box Season 6 "Sea Machine"
 
 ![](/img/1.png)
 
