@@ -16,10 +16,10 @@ timezone:
 
 title: hu1k00 # the main title
 
-tagline: 📚 Junior Penetration Tester || CTF player📚  # it will display as the sub-title
+tagline: 📚Penetration Tester || CTF player📚  # it will display as the sub-title
 
 description: >- # used by seo meta and the atom feed
- my nam is hu1k00 .and this My personal Blog.. ✔
+ my name is hu1k00 and this My personal Blog.. ✔
 
 # Fill in the protocol & hostname for your site.
 # e.g. 'https://username.github.io', note that it does not end with a '/'.
