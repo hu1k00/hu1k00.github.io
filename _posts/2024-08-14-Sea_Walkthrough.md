@@ -150,8 +150,9 @@ tag: season 6
  __and open in my browser ```127.0.0.1:8888``` and access with same ssh data..__
 
  ![](/img/yyyy.png)
+after intercepting the request I found this parameter (log_file=%2Fvar%2Flog%2Fapache2%2Faccess.log) which looks valuable I tried some command injection but nothing happened then I asked ChatGPT and it told me:
 
- i will try command injection. add simicolon after [log_file=%2Fvar%2Flog%2Fapache2%2Faccess.log;]  then encode url the comman "touch /home/amay/hulk.hack" =>> "%74%6f%75%63%68%20%2f%68%6f%6d%65%2f%61%6d%61%79%2f%68%75%6c%6b%2e%68%61%63%6b" 
+ I will try command injection. add a semicolon after [log_file=%2Fvar%2Flog%2Fapache2%2Faccess.log;]  then encode url the command "touch /home/amay/hulk.hack" =>> "%74%6f%75%63%68%20%2f%68%6f%6d%65%2f%61%6d%61%79%2f%68%75%6c%6b%2e%68%61%63%6b" 
 
  ![](/img/sert.png)
 
