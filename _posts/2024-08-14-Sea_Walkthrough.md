@@ -3,7 +3,7 @@ layout: post
 title: 'Sea Walkthrough: Conquering Hack The Box Season 6 "Sea htb"'
 date: 14-08-2024
 categories: [HackTheBox]
-tag: season 6 
+tag: season 6  
 ---
 # Sea Walkthrough: Conquering Hack The Box Season 6 "Sea Machine"
 
