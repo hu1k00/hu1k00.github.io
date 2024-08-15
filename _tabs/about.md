@@ -30,7 +30,7 @@ Although I haven’t formally earned certifications, I’ve rigorously studied t
 
 ```OSCP``` (Offensive Security Certified Professional): My extensive review of OSCP content has equipped me with advanced techniques for comprehensive penetration testing.
 
-# My Approach
+# My Approach 
 
 __My methodology involves a thorough, detail-oriented approach to penetration testing. I focus on not just identifying vulnerabilities but also understanding their implications and providing actionable recommendations.__
 
