@@ -1,9 +1,9 @@
 ---
 layout: post
-title: 'Sea Walkthrough: Conquering Hack The Box Season 6 "Sea htb"'
-date: 14-08-2024
+title: 'Usage Walkthrough: Conquering Hack The Box Machines "Usage htb"'
+date: 20-08-2024
 categories: [HackTheBox]
-tag: season 6  
+tag: machines  
 ---
 ![](/Images/usage/d.png)
 
@@ -67,6 +67,8 @@ Usage is an easy Linux machine that features a blog site vulnerable to SQL injec
 
  ![](/Images/usage/sssforget.png)
 
+## Exploit 
+
  now i will use [sqlmap.](https://sqlmap.org/) to do sql injection 
 
  1. take a new request then make to it dorp not farward and save it in "sql.txt"
@@ -116,7 +118,7 @@ Usage is an easy Linux machine that features a blog site vulnerable to SQL injec
  ![](/Images/usage/okk.png)
 
  - now i can intercept the request with burp after i clicked submit and change it again from ```shell.php.jpg``` to ```shell.php```
- and click right and open the image ...
+ and click right and open the image in new tab ...
 
  ![](/Images/usage/shell.png)
 
