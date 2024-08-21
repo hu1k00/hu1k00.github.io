@@ -92,7 +92,7 @@ image:
 
  ![](/img/exlll.png)
  
- __We can send the link by [Contact](http://sea.htb/contact.php) form to the admin__
+ __We can send the link by Contact form to the admin__
 
  ![](/img/sewee.png)
  
