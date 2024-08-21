@@ -135,7 +135,7 @@ image:
 
  > nano hu1ko // to add new user or can use echo 
  
- ![](/Images/permx/hu1.png)
+ ![](/Images/permx/hu1.png) 
 
  ![](/Images/permx/roooot.png)
 
