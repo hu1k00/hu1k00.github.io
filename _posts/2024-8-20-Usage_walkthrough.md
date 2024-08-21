@@ -3,10 +3,10 @@ layout: post
 title: 'Usage Walkthrough: Conquering Hack The Box Machines "Usage htb"'
 date: 20-08-2024
 categories: [HackTheBox]
-tag: machines  
+tag: machines
+image:
+  path: '/55img/usage.png'  
 ---
-![](/Images/usage/d.png)
-
 ## Introduction
 
 Usage is an easy Linux machine that features a blog site vulnerable to SQL injection, enabling the retrieval and cracking of the administrator's hashed password. This grants access to the admin panel, where an outdated Laravel module is exploited to upload a PHP web shell, leading to remote code execution. On the machine, plaintext credentials found in a file allow SSH access as another user, who can execute a custom binary with root privileges. The tool makes an insecure call to 7zip, which is exploited to read the root user’s private SSH key, resulting in full system compromise.
@@ -167,3 +167,6 @@ Usage is an easy Linux machine that features a blog site vulnerable to SQL injec
 
   ![](/Images/usage/root.png)
  
+---
+
+![](/Images/usage/d.png)
