@@ -190,4 +190,4 @@ with "-p", Bash skips this step, allowing the shell to retain its higher privile
  ![](/img/root.png)
 
 ---
-![](/img/2dddddd.png)
+![](/img/2dddddd.png)  
