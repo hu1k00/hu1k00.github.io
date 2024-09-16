@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 'MonitorsThree Walkthrough: Conquering Hack The Box Season 6 "MonitorsThree htb"'
-date: 14-08-2024
+date: 16-09-2024
 categories: [HackTheBox]
 tag: [season 6,machines]
 image:
