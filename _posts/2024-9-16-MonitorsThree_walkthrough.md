@@ -66,7 +66,6 @@ i will try SQLmap
 
 ![](/Images/moteiresthree/1111metas.png)
 
-![](/Images/moteiresthree/shell.png)
 
 -now we will search about any important credentials or any good data .
 
